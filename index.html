@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pasticceria Dashboard</title>
+  <style>
+    /* CSS i integruar */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header, footer {
+      background-color: #f1c40f;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    h1, h2 {
+      margin: 10px 0;
+    }
+
+    section {
+      background-color: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f1c40f;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>Mirësevini në Pasticceria Dashboard</h1>
+  </header>
+
+  <!-- Main -->
+  <main id="dashboard">
+    <label for="filter">Filtro produktet:</label>
+<input type="text" id="filter" placeholder="Shkruaj emrin e produktit">
+    <section id="stats">
+      <h3>Shto produkt të ri</h3>
+<form id="addProductForm">
+  <label for="produkt">Produkt:</label>
+  <input type="text" id="produkt" required placeholder="Shkruaj emrin e produktit">
+
+  <label for="sasia">Sasia:</label>
+  <input type="number" id="sasia" required min="1" placeholder="Shkruaj sasinë">
+
+  <label for="cmimi">Çmimi ($):</label>
+  <input type="number" id="cmimi" required min="0" step="0.01" placeholder="Shkruaj çmimin">
+
+  <button type="submit">Shto produkt</button>
+</form>
+
+      <h2>Statistikat e sotme</h2>
+      <table id="salesTable">
+        <thead>
+          <tr>
+            <th>Produkt</th>
+            <th>Sasia</th>
+            <th>Çmimi</th>
+            <th>Totali</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Biskota</td>
+            <td>10</td>
+            <td>1.5$</td>
+            <td>15$</td>
+          </tr>
+          <tr>
+            <td>Kek</td>
+            <td>5</td>
+            <td>3$</td>
+            <td>15$</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Pasticceria</p>
+  </footer>
+
+  <script>
+    // Filtrimi i tabelës sipas produktit
+const filterInput = document.getElementById("filter");
+filterInput.addEventListener("keyup", function() {
+    const filter = filterInput.value.toUpperCase();
+    const table = document.getElementById("salesTable");
+    const tr = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < tr.length; i++) { // fillon nga 1 për të shmangur header
+        const td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            const txtValue = td.textContent || td.innerText;
+            tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+        }
+    }
+});
+
+    // JS i integruar
+    window.onload = function() {
+      // Shtojmë disa produkte të rinj
+addRow("Kroasant", 12, 1.8);
+addRow("Torte çokollate", 3, 15);
+addRow("Bajame", 7, 2.5);
+addRow("Kafe Latte", 10, 2.2);
+addRow("Frappe", 5, 3);
+addRow("Muffin me cokollate", 6, 5);
+addRow("Trilece", 10, 15);
+addRow("Tiramisu", 5, 3);
+
+
+
+// Marrim formën
+const form = document.getElementById("addProductForm");
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault(); // Parandalon rifreskimin e faqes
+
+    // Marrim vlerat nga fusha
+    const produkt = document.getElementById("produkt").value;
+    const sasia = parseInt(document.getElementById("sasia").value);
+    const cmimi = parseFloat(document.getElementById("cmimi").value);
+
+    // Shtojmë produktin në tabelë
+    addRow(produkt, sasia, cmimi);
+
+    // Pastrimi i fushave
+    form.reset();
+});
+
+      console.log("Pasticceria Dashboard loaded!");
+
+      function addRow(produkt, sasia, cmimi) {
+        const tbody = document.getElementById("salesTable").getElementsByTagName("tbody")[0];
+        const newRow = tbody.insertRow();
+
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+
+        cell1.innerText = produkt;
+        cell2.innerText = sasia;
+        cell3.innerText = cmimi + "$";
+        cell4.innerText = (sasia * cmimi) + "$";
+      }
+
+      // Shtojmë një rresht të ri si shembull
+      addRow("Petulla", 8, 2);
+    };
+  </script>
+</body>
+</html>
